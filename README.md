@@ -28,13 +28,11 @@ We process a total of **8 source tables**, applying a consistent workflow to eac
   - Ensures clear data lineage and maintainability
 
 - **Column Selection & Renaming**
-  - Select only relevant columns
   - Convert column names to `snake_case`
   - Rename unclear or inconsistent fields
 
 - **Basic Data Cleaning**
   - Handle null values in key columns
-  - Remove duplicates if necessary
   - Standardize data types (e.g., timestamps)
 
 - **Metadata Handling**
