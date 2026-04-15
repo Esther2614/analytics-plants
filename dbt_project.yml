@@ -37,7 +37,7 @@ models:
   plants:
     base:
       +materialized: view
-      +schema: BASE
+      +schema: BASE_MODEL
     intermediate:
       +materialized: view
       +schema: INTERMEDIATE
