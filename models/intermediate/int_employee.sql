@@ -1,3 +1,4 @@
+--left join quit_date
 with joins as (
     select * from {{ ref('hr_joins') }}
 ),
