@@ -35,9 +35,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   plants:
-    base:
+    base_model:
       +materialized: view
-      +schema: BASE_MODEL
+      +schema: BASE
     intermediate:
       +materialized: view
       +schema: INTERMEDIATE
