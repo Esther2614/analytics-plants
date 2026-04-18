@@ -23,5 +23,24 @@ cleaned as (
     from source
 
 )
+-- ,deduplicated as (
+
+--     select *,
+--         row_number() over (
+--             partition by order_id
+--             order by returned_date asc
+--         ) as rn
+--     from cleaned
+
+-- )
+
+-- select
+--     order_id,
+--     returned_date,
+--     is_refunded,
+--     _fivetran_synced
+-- from deduplicated
+-- where rn = 1
 
 select * from cleaned
+
