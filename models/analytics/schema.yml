@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: daily_finance
+    description: "Aggregates daily financial data, summarizing revenue and costs at the daily level"
+    columns:
+      - name: finance_date
+        description: "The date of the financial record"
+        tests:
+          - unique
+          - not_null
+      - name: total_net_revenue
+        description: "Total net revenue after refunds"
+      - name: total_cost
+        description: "Total costs including operational expenses and shipping costs"
+      - name: net_profit
+        description: "Net profit calculated as total_net_revenue minus total_cost"
+
+  - name: dim_employee
+    description: "One row per employee, summarizing employee details including active status and tenure"
+    columns:
+      - name: employee_id
+        description: "Unique identifier for each employee"
+        tests:
+          - unique
+          - not_null
+      - name: employee_name
+        description: "Full name of the employee"
+      - name: hire_date
+        description: "Date the employee was hired"
+      - name: quit_date
+        description: "Date the employee quit, null if still active"
+      - name: is_active
+        description: "True if the employee is still active, false if they have quit"
+      - name: tenure_days
+        description: "Number of days from hire date to quit date, or to current date if still active"
+
+  - name: fact_orders
+    description: "One row per order, summarizing order details including return and shipping information"
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order"
+        tests:
+          - unique
+          - not_null
+      - name: session_id
+        description: "Foreign key to fact_session"
+        tests:
+          - not_null
+      - name: client_name
+        description: "Name of the client who placed the order"
+      - name: phone
+        description: "Phone number of the client"
+      - name: shipping_address
+        description: "Shipping address for the order"
+      - name: state
+        description: "US state of the shipping address"
+      - name: ordered_at
+        description: "Timestamp when the order was placed"
+      - name: payment_method
+        description: "Payment method used for the order"
+      - name: shipping_cost
+        description: "Base shipping cost for the order"
+      - name: tax_rate
+        description: "Sales tax rate applied to the order, collected from customer"
+      - name: returned_date
+        description: "Date the order was returned, null if not returned"
+      - name: is_refunded
+        description: "True if the order has been refunded"
+      - name: is_returned
+        description: "True if the order has been returned"
+      - name: total_shipping_cost
+        description: "Total shipping cost including tax, calculated as shipping_cost * (1 + tax_rate)"
+      - name: days_to_return
+        description: "Number of days from order date to return date, null if not returned"
