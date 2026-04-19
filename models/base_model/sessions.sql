@@ -22,6 +22,28 @@ cleaned as (
 
     from source
 
+),
+-- fix duplicate error
+t1 AS
+(
+    SELECT
+        session_id,
+        client_id,
+        session_started_at,
+        os,
+        ip_address,
+        is_deleted,
+        synced_at,
+        row_number() OVER (PARTITION BY session_id ORDER BY session_started_at DESC) as rn
+    FROM cleaned
 )
-
-select * from cleaned
+SELECT
+    session_id,
+    client_id,
+    session_started_at,
+    os,
+    ip_address,
+    is_deleted,
+    synced_at
+FROM t1 
+WHERE rn=1
