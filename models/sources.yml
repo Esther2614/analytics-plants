@@ -14,7 +14,7 @@ sources:
             error_after:
               count: 5
               period: day
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: "_fivetran_synced"
       - name: page_views
         config:
           freshness:
@@ -24,7 +24,7 @@ sources:
             error_after:
               count: 5
               period: day
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: "_fivetran_synced"
       - name: item_views
         config: 
           freshness:
@@ -34,7 +34,7 @@ sources:
             error_after:
               count: 5
               period: day
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: "_fivetran_synced"
       - name: orders
         config: 
           freshness:
@@ -44,7 +44,7 @@ sources:
             error_after:
               count: 5
               period: day
-          loaded_at_field: _fivetran_synced
+          loaded_at_field: "_fivetran_synced"
   - name: load_drive
     database: LOAD
     schema: GOOGLE_DRIVE
