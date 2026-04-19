@@ -73,3 +73,101 @@ models:
         description: "Total shipping cost including tax, calculated as shipping_cost * (1 + tax_rate)"
       - name: days_to_return
         description: "Number of days from order date to return date, null if not returned"
+
+  - name: dim_client
+    description: Customer dimension table. Each row represents a unique client who has placed at least one order.
+    columns:
+      - name: client_id
+        description: This is a unique id of a client.
+        tests:
+          - unique
+          - not_null
+      - name: client_name
+        description: Full name of the client associated with their latest order.
+      - name: phone
+        description: The most recent contact phone number provided during checkout.
+      - name: shipping_address
+        description: The shipping address used in the latest transaction.
+      - name: state
+        description: The geographic state of the client's latest shipping address.
+      - name: payment_method
+        description: The payment method used for the most recent order.
+      - name: last_os
+        description: The operating system used during the client's most recent session.
+      - name: last_ip_address
+        description: The IP address recorded during the client's most recent session.
+      - name: last_session_id
+        description: The ID of the client's most recent session.
+        tests:
+          - not_null
+      - name: last_order_id
+        description: The ID of the most recent order placed by this client.
+      - name: last_order_at
+        description: The timestamp of the client's most recent order.
+      - name: total_orders_count
+        description: The cumulative count of all orders placed by this client.
+
+  - name: dim_item
+    description: Item dimension table. Each row represents a unique product identified by its name. 
+    columns:
+      - name: item_name
+        description: The primary identifier for the item (derived from the VIEWS table).
+        tests:
+          - unique
+          - not_null
+      - name: current_price_per_unit
+        description: The most recently recorded price for this item based on the latest view.
+      - name: first_viewed_at
+        description: The timestamp of the very first time this item was viewed in the system.
+      - name: last_viewed_at
+        description: The timestamp of the most recent time this item was viewed.
+      - name: count_item_view
+        description: The total number of times this item has been viewed across all sessions.
+      - name: count_session
+        description: The number of unique sessions that included at least one view of this item.
+      - name: tot_add_to_cart_quantity
+        description: The cumulative quantity of this item added to carts.
+      - name: tot_remove_from_cart_quantity
+        description: The cumulative quantity of this item removed from carts.
+      - name: net_cart_retention
+        description: Calculated as (tot_add_to_cart_quantity - tot_remove_from_cart_quantity). Represents the actual quantity remaining in carts.
+
+
+  - name: fact_session
+    description: A session-grain fact table that aggregates user behavior, page navigation, item engagement, and final order conversion.
+    columns:
+      - name: session_id
+        description: Unique identifier for the session.
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: Unique identifier for the client associated with the session.
+        tests:
+          - not_null
+      - name: session_started_at
+        description: The timestamp when the session officially began (from the SESSIONS table).
+      - name: first_view_time
+        description: The timestamp of the first recorded interaction.
+      - name: last_view_time
+        description: The timestamp of the last recorded interaction in this session.
+      - name: has_viewed_landing_page
+        description: Boolean flag (1/0) indicating if the user visited the 'Landing Page'.
+      - name: has_viewed_shop_plants
+        description: Boolean flag (1/0) indicating if the user visited the 'Shop Plants' page.
+      - name: has_viewed_cart
+        description: Boolean flag (1/0) indicating if the user reached the 'Cart' page.
+      - name: has_viewed_plant_care
+        description: Boolean flag (1/0) indicating if the user visited the 'Plant Care' guide.
+      - name: has_viewed_faq
+        description: Boolean flag (1/0) indicating if the user visited the 'FAQ' page.
+      - name: page_view_count
+        description: Total number of page views recorded during the session.
+      - name: item_view_count
+        description: Total number of unique item views recorded during the session.
+      - name: total_add_to_cart_quantity
+        description: Cumulative quantity of items added to the cart during this session.
+      - name: total_remove_from_cart
+        description: Cumulative quantity of items removed from the cart during this session.
+      - name: is_order_converted
+        description: Flag (1/0 or Boolean) indicating if the session resulted in a successful order. Used to calculate Session Conversion Rate.
