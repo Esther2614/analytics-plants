@@ -1,6 +1,5 @@
 -- add 3 columns for subsequent analytics:
---is_returned
---total_shipping_cost,
+--is_returned and total_shipping_cost,
 --Number of days from order to return
 with orders as (
     select * from {{ ref('int_fact_orderds') }}
@@ -20,7 +19,7 @@ final as (
         tax_rate,
         --is_deleted,
 
-        -- 退货相关
+        -- refund-related columns
         returned_date,
         is_refunded,
         case
@@ -28,14 +27,14 @@ final as (
             else false
         end                                                         as is_returned,
 
-        -- 费用计算
-        round(shipping_cost * (1 + tax_rate), 2)                   as total_shipping_cost,
+        -- computing fees 
+        round(shipping_cost, 2)                   as total_shipping_cost,
 
-        -- 从下单到退货的天数
+        -- days from making the order to return
         datediff('day', ordered_at::date, returned_date)            as days_to_return
 
     from orders
-    where is_deleted = false    -- 过滤软删除订单
+    where is_deleted = false    
 )
 
 select * from final
