@@ -6,7 +6,6 @@ with employees as (
 final as (
     select
         *,
-        -- 业务逻辑放这里
         case
             when quit_date is not null then false
             else true
