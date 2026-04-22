@@ -31,7 +31,8 @@ final as (
         round(shipping_cost, 2)                   as total_shipping_cost,
 
         -- days from making the order to return
-        datediff('day', ordered_at::date, returned_date)            as days_to_return
+        datediff('day', ordered_at::date, returned_date)            as days_to_return,
+        gross_revenue
 
     from orders
     where is_deleted = false    
